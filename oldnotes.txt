@@ -1,0 +1,176 @@
+from classes.Character import Character
+
+def sortBySpeed(*chars)->list:
+    mylist = sorted(chars, key=lambda x: x.speed, reverse=True)
+    return mylist
+
+
+def fight(*chars):
+    chars_sorted = sorted(chars, key=lambda x: x.speed, reverse=True)
+    #testing double fight
+    char1=chars_sorted[0]
+    char2=chars_sorted[1]
+    #print(f"{char1}\n{char2}")
+    temp_hp1 = chars_sorted[0].hp
+    temp_hp2 = chars_sorted[1].hp
+    while (temp_hp1 > 0) and (temp_hp2 > 0):
+        #Char 1 attacks
+        damage = char1.attack - char2.defense
+        temp_hp2 -= damage
+        if temp_hp2 <= 0:
+            print(f"{char1.name} attacked and did {damage} damage, defeating {char2.name}")
+            return char1
+        #print(f"{char1.name} attacked and did {damage} damage leaving {char2.name} with {temp_hp2} health")
+
+        #Char 2 attacks
+        damage = char2.attack - char1.defense
+        temp_hp1 -= damage
+        if temp_hp1 <= 0:
+            print(f"{char2.name} attacked and did {damage} damage, defeating {char1.name}")
+            return char2
+        #print(f"{char2.name} attacked and did {damage} damage leaving {char1.name} with {temp_hp1} health")
+
+
+#make classes a json         HP ATK DEF SPD
+AirMage = Character('AirMage',20,18.5,10,16)
+#Skill choices: crit chance or double attacks/spd increase
+FireMage = Character('FireMage',21,21,8,13)
+#Skill choices: Burn enemy, Crit chance
+IceMage = Character('IceMage',35,15,11,12)
+#Restore % hp, slow enemy
+Paladin = Character('Paladin',30,14,13.5,11)
+#Restore % hp, 
+DarkFighter = Character('DarkFighter',17,18,12,12)
+#% dmg penetrate, 
+WindArcher = Character('WindArcher',20,18,11,15)
+
+EarthArcher = Character('EarthArcher',28.5,16,11.5,10)
+
+
+##
+#Gacha Element -> start w 7 pot chars. Player chooses main one when they & can get others through gacha 
+#Dupes give currency for improvement (can get mats through other means)
+#Teams of 3 + support pet
+#Stamina or Cooldown -> probs cd easier (look at disc doc)
+#
+##
+
+##Stats##
+##HP
+##ATK
+##DEF
+##SPD
+##AGGRO
+##CRIT %?
+##CRIT DMG?
+
+##Buff##
+##Duration
+##Res_buff(character)
+    ##Do thing. ex char.c_stat.atk -= char.b_stat.atk * .20
+##Source -
+    ##Equipment E[equip_id]
+    ##Combat C[char_id]
+    ##Inherent I[class_id]
+    ##Support S[support_id]
+##starts:Burn, Crit Chance, 
+
+##Party of 3, plus pet(support stats)
+
+##Character## <--can act as enemy
+##Id
+##Name
+##Class
+##Experience
+##Level -> calc based on experience. maybe have level table. 
+##Base Stats -> class stats + Eventually race/rng?
+##Equipped Stats
+##Combat Stats
+##List - Equipment
+##List - Buffs
+##List - Debuffs
+##Player bool
+##Player Id (opt) default 0. 
+
+##Player##
+##id
+
+##db -> Player Table(id starts at 1k), Item Table, Character Table(Fk optional)..... Inventory table for relations? img in filepath
+
+
+##Team(*chars,support)##
+##char[List]
+##Owner (Player ID, or 1 if enemy)
+
+####Combat(*chars)####
+    ##Def check_outcome
+        ##Enemy team hp
+        ##Current team hp
+        ##return winner id, or 0 if ongoing. 
+    ##Turn Order(team1,team2)
+    ##
+    ##combat_turn(char,enemyTeam)##
+    #Def res_buffs(char)
+        #Do thing
+        #Countdown
+    #Def res_debuffs(char)
+        #Do thing
+        #Countdown
+    #Def decide_target(enemyTeam) -> char
+        ##random number generate -> 
+    #Def Action(char,target)
+        ##Apply Damage
+        ##Apply Heal
+        ##Apply Status Affect
+
+
+
+
+##
+#Unit
+#Classes (Max stats, base)
+#character
+    #Current Health,atk,def,spd
+    #Def takeDamage, heal
+    #Stats
+    #Classes (Max) hp etc
+    #Temp stats
+    #statuses
+
+
+
+
+#Combantant?
+#class: StatusEffects
+        #Enum DamageType - ex Normal, Poison, Fire, Electric
+        #Enum HandleStatus
+            #case damageType normal, poison,etc
+
+
+#Start fight: 
+    #Add in fighters
+    #class,equipment
+    #Turn Order
+
+#Combat
+#Load in Combatants,
+#Resolve buffs/debuffs
+
+classes = [AirMage,FireMage,IceMage,Paladin,DarkFighter,WindArcher,EarthArcher]
+dict = {AirMage:0,FireMage:0,IceMage:0,Paladin:0,DarkFighter:0,WindArcher:0,EarthArcher:0}
+
+for x in classes:
+    for i in classes:
+        char = fight(x,i)
+        dict[char] += 1
+
+for k,v in dict.items():
+    print(k.name,v)
+#fight(AirMage, EarthArcher)
+                
+            
+
+            
+
+
+    
