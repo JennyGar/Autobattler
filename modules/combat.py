@@ -37,6 +37,11 @@ def deal_damage(character, target)->CombatDetails:
     dets = CombatDetails(target,damage,0,target.combat_stats.hp)
     return dets
 
+def resolve_debuffs(char : Character):
+    return NotImplemented
+
+
+
 ##TODO
 def combat_turn(character, player_team, enemy_team):
     ##TODO Resolve buffs

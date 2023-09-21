@@ -1,0 +1,47 @@
+SSR characters
+
+Alys - Dhampyr (Blood Sorcerer) 
+
+    lv10: On attack drains hp
+    lv20: At start of combat, lowers enemy's team attack by 10%
+
+
+Horn - Ice Giant (Barbarian)
+
+    lv10: Attack Boost, Higher Aggro
+    lv20: Takes 75% damage
+
+
+Royce - Human (Rogue)
+
+    lv10: Speed and Crit Chance boost
+    lv20: Ignores 20% of enemies defense
+
+
+
+Cia - Half Elf (Ice Wizard)
+    lv10: Lowers Aggro, Attack Boost
+    lv20: Attacks a second time, dealing 50% damage
+
+
+SSR supports - To be added later
+Atti
+Construct (Alys's)
+
+
+SR characters
+
+AirMage - Character('AirMage',20,18.5,10,16)
+#Skill choices: crit chance or double attacks/spd increase
+
+FireMage = Character('FireMage',21,21,8,13)
+    lv10: Burn enemy (5% hp/turn)
+IceMage = Character('IceMage',35,15,11,12)
+#Restore % hp, slow enemy
+Paladin = Character('Paladin',30,14,13.5,11)
+#Restore % hp, 
+DarkFighter = Character('DarkFighter',17,18,12,12)
+#% dmg penetrate, 
+WindArcher = Character('WindArcher',20,18,11,15)
+
+EarthArcher = Character('EarthArcher',28.5,16,11.5,10)
