@@ -1,4 +1,4 @@
-from modules.afflictions import * 
+from modules.modifiers.modifier import * 
 
 class Equipment:
     def __init__(self, rarity,buff):

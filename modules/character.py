@@ -1,5 +1,8 @@
 from modules.role import Role
-from modules.afflictions import Affliction
+from modules.modifiers.modifier import *
+from modules.modifiers.amod import *
+from modules.modifiers.pmod import *
+from modules.modifiers.tmod import *
 from abc import ABC
 import re
 
@@ -7,7 +10,7 @@ import re
 #debuffs are the ones this char will apply when it does damage
 #buffs are the ones applied to this char
 class Character(ABC):
-    def __init__(self, char_id:int, char_name: str, role: Role, buffs: [Affliction], debuffs: [Affliction], level: int):
+    def __init__(self, char_id:int, char_name: str, role: Role, buffs: [Modifier], level: int):
         self.char_id = char_id
         self.char_name = char_name
         self.role = role
@@ -20,9 +23,8 @@ class Character(ABC):
 
         ##on turn start affects. change to afflictions
         self.buffs = buffs
-        
+
         ##on attack affects -> add "affliction" to enemy, & add buff to self. 
-        self.debuffs = debuffs
         self.level = level
 
     def __str__(self):
@@ -30,6 +32,28 @@ class Character(ABC):
     
     #base stats - only from classes base stats (not incl passive buffs)
     #equipped stats - equipment & inherent. "Equipping" skill
+
+    def get_action_modifiers(self):
+        amods = []
+        for mod in self.buffs:
+            if issubclass(mod.__class__, AMod):
+                amods.append(mod)
+        return amods
+
+    def get_passive_modifiers(self):
+        pmods = []
+        for mod in self.buffs:
+            if issubclass(mod.__class__, PMod):
+                pmods.append(mod)
+        return pmods
+
+    def get_turn_modifiers(self):
+        tmods = []
+        for mod in self.buffs:
+            if issubclass(mod.__class__, TMod):
+                tmods.append(mod)
+        return tmods
+
 
     def get_ebuffs(self):
         ebuffs = []
@@ -56,14 +80,9 @@ class Character(ABC):
             if re.search("S\d+",buff.source) is not None: ebuffs.append(buff)
         return ebuffs
     
-    def resolve_cbuffs(self):
-        self.combat_stats = self.equipped_stats
-        for buff in self.get_cbuffs(): buff.resolve_affliction(self.combat_stats)
-        return None
-    
 class Unit(Character):
-    def __init__(self, char_id:int, char_name: str, role: Role, buffs: [Affliction], debuffs: [Affliction], level: int,player_id):
-        super().__init__(char_id, char_name, role, buffs, debuffs, level)
+    def __init__(self, char_id:int, char_name: str, role: Role, buffs: [Modifier], level: int,player_id):
+        super().__init__(char_id, char_name, role, buffs, level)
         self.player_id = player_id
 
     def equip_item(equip):
@@ -85,6 +104,6 @@ class Unit(Character):
     
 ##Maybe Drop table/type at some point
 class Enemy(Character):
-    def __init__(self, char_id:int, char_name: str, role: Role, buffs: [Affliction], debuffs: [Affliction], level: int, rarity):
-        super().__init__(char_id, char_name, role, buffs, debuffs, level)
+    def __init__(self, char_id:int, char_name: str, role: Role, buffs: [Modifier], level: int, rarity):
+        super().__init__(char_id, char_name, role, buffs, level)
         self.rarity = rarity

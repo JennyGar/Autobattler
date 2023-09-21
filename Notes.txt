@@ -36,8 +36,11 @@ AirMage - Character('AirMage',20,18.5,10,16)
 
 FireMage = Character('FireMage',21,21,8,13)
     lv10: Burn enemy (5% hp/turn)
-IceMage = Character('IceMage',35,15,11,12)
-#Restore % hp, slow enemy
+
+WaterMage = Character('IceMage',35,15,11,12)
+    lv10: Restore hp of lowest char()
+
+
 Paladin = Character('Paladin',30,14,13.5,11)
 #Restore % hp, 
 DarkFighter = Character('DarkFighter',17,18,12,12)

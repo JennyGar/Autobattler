@@ -7,7 +7,7 @@ import random
 class CombatDetails:
     target: Character
     damage: int
-    debuff_applied: Affliction
+    debuff_applied: Modifier
     targethp: int
 
 
@@ -44,7 +44,6 @@ def resolve_debuffs(char : Character):
 
 ##TODO
 def combat_turn(character, player_team, enemy_team):
-    ##TODO Resolve buffs
     target = decide_target(enemy_team)
     dets = deal_damage(character,target)
     ##for combat buffs on character, duration --
@@ -83,7 +82,7 @@ def combat(player_team: Team, enemy_team: Team):
             ongoing = check_outcome(player_team,enemy_team)
             if (ongoing): break 
         i +=1
-    if ongoing is 1: print("player loses")
+    if ongoing == 1: print("player loses")
     else: print("player wins")
         
 ##Add battle log, most recent battle log for player kept then archived on new battle. 
