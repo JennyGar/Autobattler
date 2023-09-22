@@ -10,3 +10,6 @@ class Stats:
     
     def __str__(self):
         return f"hp: {self.hp}, atk: {self.atk}, def: {self.defense}, spd: {self.spd}, aggro: {self.aggro}, crit%: {self.crit_chance}, crit dmg: {self.crit_damage}"
+    
+
+

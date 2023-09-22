@@ -1,50 +1,43 @@
-SSR characters
+Checklist:
 
-Alys - Dhampyr (Blood Sorcerer) 
+-Set up base classes/design
 
-    lv10: On attack drains hp
-    lv20: At start of combat, lowers enemy's team attack by 10%
+COMBAT
+- Resolve combat based on stats
+    -Fix out of range error
+- Resolve combat with buffs
+- Create readable/parsable combat log format
 
+CHARACTERS & ENEMIES
+- Finalize Character stats  & skills
+- Implement character Skills
+- Get character pictures & backstories
+- Create generic enemies
 
-Horn - Ice Giant (Barbarian)
+ITEMS & PROGRESSION
+- Create Equipment & Determine worth
+- Add droptable to enemies based on rarity & type
+- Design desired progression
+- implement to character levels
+- Create progression items
+- Gacha decisions/design
+- Balance Currency and decide on shops
+- Cooldown decision & implementation (@ specific times or just cd)
 
-    lv10: Attack Boost, Higher Aggro
-    lv20: Takes 75% damage
+ENCOUNTER DESIGN 
+-rough design of player experience start to finish experience
 
+DATABASE
+- Plan out database / json difs (A lot has changed)
+- set up database
 
-Royce - Human (Rogue)
-
-    lv10: Speed and Crit Chance boost
-    lv20: Ignores 20% of enemies defense
-
-
-
-Cia - Half Elf (Ice Wizard)
-    lv10: Lowers Aggro, Attack Boost
-    lv20: Attacks a second time, dealing 50% damage
-
-
-SSR supports - To be added later
-Atti
-Construct (Alys's)
-
-
-SR characters
-
-AirMage - Character('AirMage',20,18.5,10,16)
-#Skill choices: crit chance or double attacks/spd increase
-
-FireMage = Character('FireMage',21,21,8,13)
-    lv10: Burn enemy (5% hp/turn)
-
-WaterMage = Character('IceMage',35,15,11,12)
-    lv10: Restore hp of lowest char()
+DISCORD
+- Discord embeds for Unit
+- Commands for player info
+- Commands for interaction (go through encounter design & polish) 
+- Design embeds - javascript
+- Implement embeds
 
 
-Paladin = Character('Paladin',30,14,13.5,11)
-#Restore % hp, 
-DarkFighter = Character('DarkFighter',17,18,12,12)
-#% dmg penetrate, 
-WindArcher = Character('WindArcher',20,18,11,15)
+??? PROFIT. Except not really cause this is still gonna be a trash. But it will be my heartfelt trash. 
 
-EarthArcher = Character('EarthArcher',28.5,16,11.5,10)

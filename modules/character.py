@@ -10,79 +10,41 @@ import re
 #debuffs are the ones this char will apply when it does damage
 #buffs are the ones applied to this char
 class Character(ABC):
-    def __init__(self, char_id:int, char_name: str, role: Role, buffs: [Modifier], level: int):
+    def __init__(self, char_id:int, char_name: str, role: Role, level: int):
         self.char_id = char_id
         self.char_name = char_name
         self.role = role
         self.base_stats = role.get_stats(5)
-        ##also equipped_stats include inherent
+        #stats with pmods(equipment + support) slightly more storage but easier to process. 
         self.equipped_stats = role.get_stats(5)
         self.combat_stats = role.get_stats(5)
-
-        ##Maybe change from buffs/debuffs to just self afflictions & afflictions on attack?
-
-        ##on turn start affects. change to afflictions
-        self.buffs = buffs
-
-        ##on attack affects -> add "affliction" to enemy, & add buff to self. 
+        self.amods= []
+        self.pmods = []
+        self.tmods= []
+        #Removing buffs
         self.level = level
 
     def __str__(self):
-        return f"{self.combat_stats}"
+        return f"{self.char_name}, {self.combat_stats}"
     
     #base stats - only from classes base stats (not incl passive buffs)
     #equipped stats - equipment & inherent. "Equipping" skill
 
-    def get_action_modifiers(self):
-        amods = []
-        for mod in self.buffs:
-            if issubclass(mod.__class__, AMod):
-                amods.append(mod)
-        return amods
+    def reset_combat_stats(self):
+        self.combat_stats = self.equipped_stats
 
-    def get_passive_modifiers(self):
-        pmods = []
-        for mod in self.buffs:
-            if issubclass(mod.__class__, PMod):
-                pmods.append(mod)
-        return pmods
-
-    def get_turn_modifiers(self):
-        tmods = []
-        for mod in self.buffs:
-            if issubclass(mod.__class__, TMod):
-                tmods.append(mod)
-        return tmods
-
-
-    def get_ebuffs(self):
-        ebuffs = []
-        for buff in self.buffs:
-            if re.search("E\d+",buff.source) is not None: ebuffs.append(buff)
-        return ebuffs
+    def add_amod(self, amod: AMod):
+        self.amods.append(amod)
     
-    def get_cbuffs(self):
-        ebuffs = []
-        for buff in self.buffs:
-            if re.search("C\d+",buff.source) is not None: ebuffs.append(buff)
-        return ebuffs
-    
-    def get_ibuffs(self):
-        ebuffs = []
-        for buff in self.buffs:
-            if re.search("I\d+",buff.source) is not None: ebuffs.append(buff)
-        return ebuffs
-    
-    def get_sbuffs(self):
-        ebuffs = []
-        for buff in self.buffs:
-            print(buff)
-            if re.search("S\d+",buff.source) is not None: ebuffs.append(buff)
-        return ebuffs
+    def add_pmod(self, pmod: PMod):
+        self.pmods.append(pmod)
+
+    def add_tmod(self, tmod: TMod):
+        self.tmods.append(tmod)
     
 class Unit(Character):
-    def __init__(self, char_id:int, char_name: str, role: Role, buffs: [Modifier], level: int,player_id):
-        super().__init__(char_id, char_name, role, buffs, level)
+    def __init__(self, char_id:int, char_name: str, role: Role, level: int,player_id):
+        super().__init__(char_id, char_name, role, level)
         self.player_id = player_id
 
     def equip_item(equip):
@@ -104,6 +66,6 @@ class Unit(Character):
     
 ##Maybe Drop table/type at some point
 class Enemy(Character):
-    def __init__(self, char_id:int, char_name: str, role: Role, buffs: [Modifier], level: int, rarity):
-        super().__init__(char_id, char_name, role, buffs, level)
+    def __init__(self, char_id:int, char_name: str, role: Role, level: int, rarity):
+        super().__init__(char_id, char_name, role, level)
         self.rarity = rarity

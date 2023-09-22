@@ -22,6 +22,8 @@ class Modifier():
     def count_down(self):
         if self.duration is not None and self.current > 0:
             self.current -= 1
+        #if self.current == 0: 
+            #print(f"{self.name} expired")
 
     @abstractmethod
     def resolve_affliction(stats):

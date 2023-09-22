@@ -28,9 +28,9 @@ class DecayingStr(Modifier):
 
         
     def resolve_affliction(self, stats: Stats):
-        print("resolve affliction has been called")
         print(self.value)
         stats.str += self.value
+        
 
     def count_down(self):
         if self.duration is not None and self.current > 0:
