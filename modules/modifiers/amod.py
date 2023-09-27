@@ -15,17 +15,20 @@ class Drainhp(AMod):
         super().__init__(source,value,duration)
         self.name="Drainhp"
 
-    def resolve_affliction(self, char_stats: Stats, opponent_stats: Stats, opponent_mods: Stats):
-        char_stats.hp += 2
-        opponent_stats.hp -= 2
-        return f"{self.value} hp was drained from"
+    def resolve_affliction(self, char_stats: Stats, opponent_stats: Stats, opponent_tmods: Stats, damage: int):
+        drained = 0
+        if damage >= self.value:
+            drained = self.value
+        else: drained = damage
+        char_stats.hp += drained
+        return f"{drained} hp was drained from"
 
 class ApplyBurn(AMod):
     def __init__(self,source,value,duration=None):
         super().__init__(source,value,duration)
         self.name="ApplyBurn"
     
-    def resolve_affliction(self, char_stats: Stats, opponent_stats: Stats, opponent_tmods: list):
+    def resolve_affliction(self, char_stats: Stats, opponent_stats: Stats, opponent_tmods: list, damage: int):
         for x in opponent_tmods:
             if x.name is 'Burn':
                 x.current=self.duration

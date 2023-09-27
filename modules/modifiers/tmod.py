@@ -28,7 +28,6 @@ class DecayingStr(Modifier):
 
         
     def resolve_affliction(self, stats: Stats):
-        print(self.value)
         stats.str += self.value
         
 

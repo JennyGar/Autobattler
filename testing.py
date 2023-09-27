@@ -16,6 +16,7 @@ mybuff = SpeedBuff('C1234',5,4)
 mybuff.count_down()
 aburn = Burn('C123',3,3)
 aburnmod = ApplyBurn('C123',3,3)
+drainhp = Drainhp("C1231",2)
 #print(mybuff)
 ##Test roles
 airmage = Role(1,'airmage1',Stats(20,17,8,15,.75,.2,30))
@@ -35,15 +36,16 @@ char5 = Enemy(5,'enemy5',airmage3,level=5,rarity="normal")
 char6 = Enemy(6,'enemy6',fighter3,level=5,rarity="normal")
 
 char2.add_amod(aburnmod)
+char4.add_amod(drainhp)
 
-for x in char2.amods:
+""" for x in char2.amods:
     x.resolve_affliction(char2.combat_stats,char3.combat_stats,char3.tmods)
 
 print(char3)
 for x in char3.tmods:
     print(x)
     x.resolve_affliction(char3.combat_stats)
-print(char3)
+print(char3) """
 
 #Test teams
 player_one_team = Team([char1,char2,char3])

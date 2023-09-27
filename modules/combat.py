@@ -11,8 +11,9 @@ import random
 class CombatDetails:
     target: Character
     damage: int
-    debuff_applied: Modifier
     targethp: int
+    #list of strings
+    amodstr: str
 
 ##Returns ordered list based on speed for combatants
 def decide_order(player_team: Team, enemy_team: Team)->[Character]:
@@ -37,19 +38,23 @@ def decide_target(enemy_team: Team) -> Character:
 ##Damage calculations, action modifiers applied to damage after initial calc. 
 def deal_damage(character, target)->CombatDetails:
     damage = character.combat_stats.atk - target.combat_stats.defense
-    damage = apply_amods(character,target,damage)
+    amods = apply_amods(character,target,damage)
+    damage = amods[0]
+    amodstr = amods[1]
     target.combat_stats.hp -= damage
     if target.combat_stats.hp < 0: target.combat_stats.hp = 0
-    dets = CombatDetails(target,damage,0,target.combat_stats.hp)
+    dets = CombatDetails(target,damage,target.combat_stats.hp,amodstr)
     return dets
 
 ##Action modifiers (After damage calc)
 def apply_amods(char: Character, target: Character, damage):
+    #Stores list of strings describing amod application
+    amodstr = []
     for amod in char.amods:
         #eventually add damage. 
-        x = amod.resolve_affliction(char.combat_stats,target.combat_stats,target.tmods)
-        print(f"{x} {target.char_name}")
-    return damage
+        x = amod.resolve_affliction(char.combat_stats,target.combat_stats,target.tmods,damage)
+        amodstr.append(f"{x} {target.char_name}")
+    return [damage,amodstr]
 
 ##Turn modifiers (Start of Turn)
 def apply_tmods(char:Character):
@@ -73,7 +78,7 @@ def countdown_tmods(char:Character):
             tempstring += ". It timed out"
         print(tempstring)
 
-##Turn for a character
+##Turn for a character##For logs probably have start turn (char_id) and end turn (char_id)
 def combat_turn(character, player_team, enemy_team):
     if character.combat_stats.hp <= 0:
         return
@@ -82,6 +87,8 @@ def combat_turn(character, player_team, enemy_team):
     starthp = target.combat_stats.hp.__str__()
     dets = deal_damage(character,target)
     print(f"{character.char_name} attacked {target.char_name} dealing {dets.damage} damage, {starthp} -> {dets.targethp} hp")
+    for amod in dets.amodstr:
+        print(amod)
     if dets.targethp <= 0:
         print(f"{target.char_name} is no longer able to continue")
     countdown_tmods(character)
@@ -104,14 +111,13 @@ def check_outcome(player_team: Team, enemy_team: Team):
     else: return 0
 
 def print_players(player_team: Team, enemy_team:Team):
-    enemies = "enemies - "
-    allies= "allies - "
+    enemies = "ENEMIES: "
+    allies= "ALLIES: "
     for char in enemy_team.chars:
-        enemies += f"{char.char_name}: {char.combat_stats.hp}hp   "
+        enemies += f"•{char.char_name} {char.combat_stats.hp}hp  "
     for char in player_team.chars:
-        allies += f"{char.char_name}: {char.combat_stats.hp}hp   "
-    print(allies)
-    print(enemies)
+        allies += f"•{char.char_name} {char.combat_stats.hp}hp  "
+    return [allies,enemies]
 
 def combat(player_team: Team, enemy_team: Team):
     for char in player_team.chars:
@@ -122,9 +128,11 @@ def combat(player_team: Team, enemy_team: Team):
     combat_dets = None
     ongoing = 0
     i=1
+    ##TODO: timeout after 15(?) turns & wincon based on total team hp.
     while not ongoing:
-        print(f"_______________\n|---TURN {i}----|\n---------------")
-        print_players(player_team,enemy_team)
+        #print(f"_______________\n|---TURN {i}----|\n---------------")
+        x = print_players(player_team,enemy_team)
+        print(f"{'_'*70}\n|---TURN {i}----| {x[0]}\n|             | {x[1]}\n {'-'*70}")
         for char in order_list:
             if type(char) is Enemy:
                 combat_dets = combat_turn(char,enemy_team,player_team)
@@ -139,25 +147,4 @@ def combat(player_team: Team, enemy_team: Team):
     for char in enemy_team.chars:
         char.reset_combat_stats()
         
-##Add battle log, most recent battle log for player kept then archived on new battle. 
-
-##Combat Start:
-##Input team 1 & team 2
-##Order by speed
-##for x in order: 
-    ##Turn(x)
-
-
-
-##Turn:
-##Resolve HP Combat Buffs
-##Resolve HP Combat Debuffs 
-##Choose Target -> weighted rng based on enemy aggro. 
-##Damage(target)
-    ##Check target hp
-    ## if 0, target dead & combat_aggro set to 0
-        ##check other team still has a char with 1 or more hp.
-        ## Win/lose if not. 
-##Buff countdown -1
-##Debuff countdown -1
-##Reset combat buffs & reapply non hp ones
+##TODO: Add battle log, most recent battle log for player kept then archived on new battle. 

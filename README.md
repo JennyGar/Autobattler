@@ -1,1 +1,1 @@
-# CrappyAutobattler
+Made as a personal project to experiment with turn based rpg mechanics in the form of an auto battler. Due to the experimental nature, implementations will be messy and riddled with questionable choices for a while as I try out various methods. Please see Notes.txt for planning information if curious. 
